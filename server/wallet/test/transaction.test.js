@@ -1,6 +1,7 @@
 const Transaction = require("./../Transaction");
 const Wallet = require("./../Wallet");
 const { verifySignature } = require("./../../sing/Sign");
+const { REWARD_INPUT, MINING_REWARD } = require("../../config/config");
 
 describe("Transaction", () => {
   let transaction, senderWallet, recipient, amount;
@@ -61,11 +62,11 @@ describe("Transaction", () => {
   });
 
   describe("validTransaction()", () => {
-    let errorMock;
+    // let errorMock;
 
     beforeEach(() => {
-      errorMock = jest.fn();
-      global.console.error = errorMock;
+      // errorMock = jest.fn();
+      // global.console.error = errorMock;
     });
     describe("when the transaction is valid", () => {
       it("returns true", () => {
@@ -77,7 +78,7 @@ describe("Transaction", () => {
         it("returns false", () => {
           transaction.outputMap[senderWallet.publicKey] = 999999;
           expect(Transaction.validTransaction(transaction)).toBe(false);
-          expect(errorMock).toHaveBeenCalled();
+          // expect(errorMock).toHaveBeenCalled();
         });
       });
 
@@ -85,7 +86,7 @@ describe("Transaction", () => {
         it("returns false", () => {
           transaction.input.signature = new Wallet().sign("data");
           expect(Transaction.validTransaction(transaction)).toBe(false);
-          expect(errorMock).toHaveBeenCalled();
+          // expect(errorMock).toHaveBeenCalled();
         });
       });
     });
@@ -104,9 +105,9 @@ describe("Transaction", () => {
             });
           }).toThrow("amount exceeds balance");
         });
-      });
+    });
   
-      describe("and the amount is valid", () => {
+    describe("and the amount is valid", () => {
         beforeEach(() => {
           originalSignature = transaction.input.signature;
           originalSenderOutput = transaction.outputMap[senderWallet.publicKey];
@@ -164,6 +165,25 @@ describe("Transaction", () => {
             )
           })
         });
-      });
+    });
+
+    
+  describe('rewardTransaction()', ()=>{
+    let rewardTransaction, minerWallet;
+
+    beforeEach(()=>{
+      minerWallet = new Wallet();
+      rewardTransaction = Transaction.rewardTransaction({minerWallet});
+    });
+
+    it('creates a transaction with the reward input',()=>{
+      expect(rewardTransaction.input).toEqual(REWARD_INPUT);
+    });
+
+    it('creates one transaciton for the miner with the `MINING_REWARD`',()=>{
+      expect(rewardTransaction.outputMap[minerWallet.publicKey]).toEqual(MINING_REWARD);
+    });
+
+  });
     });
 });
