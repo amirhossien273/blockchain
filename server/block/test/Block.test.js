@@ -1,4 +1,5 @@
 const { GENESIS_DATA, MINE_RATE } = require("../../config/config");
+const hexToBinary = require("hex-to-binary");
 const Block = require("../Block");
 
 describe("Block", ()=>{
@@ -55,7 +56,7 @@ describe("Block", ()=>{
         });
 
         it("sets a hash that maces the difficulty criteria", ()=>{
-            expect(mine.hash.substring(0,mine.difficulty)).toEqual('0'.repeat(mine.difficulty));
+            expect(hexToBinary(mine.hash).substring(0,mine.difficulty)).toEqual('0'.repeat(mine.difficulty));
         })
     });
 

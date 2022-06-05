@@ -24,12 +24,15 @@ class Blockchain {
         
            const block         = chain[i];
            const actualLatHash = chain[i-1].hash;
+           const lastDifficulty = chain[i-1].difficulty;
            const {timestamp, lastHash, hash, data, difficulty, nonce} = block;
 
            if(lastHash !== actualLatHash) return false;
 
+           
+           if(Math.abs(lastDifficulty - difficulty)> 1) return false;
          
-            if(hash !== generateHash(timestamp, lastHash, data, difficulty, nonce)) return false;
+           if(hash !== generateHash(timestamp, lastHash, data, difficulty, nonce)) return false;
         }
 
         return true;
@@ -37,10 +40,16 @@ class Blockchain {
 
     replaceChain(newChain) {
 
-        if(newChain.length <= this.chain.length) return;
+        if(newChain.length <= this.chain.length){
+            // console.log('the incoming chain must be longer');
+            return;
+        }
 
-        if(!Blockchain.isValidChain(newChain)) return;
-
+        if(!Blockchain.isValidChain(newChain)){
+            // console.log('the incoming chain must be valid');
+            return;
+        }
+        // console.log('replacing chain with: ', newChain);
         this.chain = newChain;
     }
 }

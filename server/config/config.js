@@ -1,14 +1,15 @@
 const INITAL_DIFFICALTLY = 3;
 const MINE_RATE = 1000;
+const STARTING_BALANCE = 1000;
 
 const GENESIS_DATA = {
-    timestamp:    '1',
-    lastHash:     '1',
-    hash:         '1',
-    data:         '1',
-    difficulty:    3,
-    nonce:        0,
+    timestamp: 1,
+    lastHash: '------',
+    hash: 'hash-one',
+    difficulty: INITAL_DIFFICALTLY,
+    nonce: 0,
+    data: []
 }
 
 
-module.exports = {GENESIS_DATA, MINE_RATE};
+module.exports = {GENESIS_DATA, MINE_RATE, STARTING_BALANCE};

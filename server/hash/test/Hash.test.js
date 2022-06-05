@@ -2,6 +2,6 @@ const generateHash = require("../Hash");
 
 describe("generateHash()", ()=>{
     it('generates a SHA-256 hashed output', ()=>{
-        expect(generateHash('test-data')).toEqual("a186000422feab857329c684e9fe91412b1a5db084100b37a98cfc95b62aa867");   
+        expect(generateHash('test-data')).toEqual("87879844c02b42cbfafc29991a776565f9b6b709b65af3f291db0a90004ccfab");   
     })
 });
